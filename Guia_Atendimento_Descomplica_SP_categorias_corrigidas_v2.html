@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Guia de Atendimento | Descomplica SP</title>
+<style>
+:root{--g:#123b35;--g2:#1b594f;--mint:#e8f2ef;--ink:#172321;--muted:#62716e;--line:#dce5e2;--bg:#f5f7f6;--gold:#f0c76a;--warn:#fff4d6}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 "Segoe UI",Arial,sans-serif}.top{background:var(--g);color:white;padding:25px max(20px,calc((100% - 1150px)/2)) 28px}.brand{display:flex;gap:12px;align-items:center;margin-bottom:27px}.logo,.ico{display:grid;place-items:center;border-radius:12px;width:44px;height:44px;background:#ffffff20;font-size:22px}.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#c6ddd7}.brand strong{font-size:17px}.hero h1{font-size:clamp(27px,4vw,38px);line-height:1.15;margin:0 0 9px}.hero p{color:#d5e6e1;margin:0;max-width:650px}.search{display:flex;gap:9px;max-width:760px;margin-top:22px}.search input{flex:1;min-width:0;border:0;border-radius:11px;padding:14px;font:inherit}.search button{border:0;border-radius:11px;padding:0 16px;background:var(--gold);font-weight:700;cursor:pointer}.wrap{max-width:1150px;margin:auto;padding:24px 20px 45px}.toolbar{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.toolbar p{color:var(--muted)}.filters{display:flex;gap:7px;flex-wrap:wrap}.chip{border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:white;cursor:pointer}.chip.active{background:var(--g);color:white;border-color:var(--g)}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:16px}.card{border:1px solid var(--line);border-radius:15px;padding:18px;background:white;text-align:left;cursor:pointer;display:flex;flex-direction:column;min-height:205px;color:inherit;box-shadow:0 8px 24px #102b2510}.card:hover{border-color:#8db4aa;transform:translateY(-2px)}.ctop,.foot{display:flex;align-items:center;justify-content:space-between;gap:8px}.ico{background:var(--mint)}.tag{font-size:11px;font-weight:700;color:var(--g2);background:var(--mint);padding:5px 9px;border-radius:999px}.card h2{font-size:18px;line-height:1.3;margin:15px 0 7px}.card p{margin:0 0 16px;color:var(--muted)}.foot{margin-top:auto;color:var(--g2);font-weight:700;font-size:13px}.hint{font-size:10px;color:var(--muted);margin-top:5px;font-weight:400}.card-link{display:inline-flex;align-items:center;gap:4px;margin-top:8px;padding:5px 10px;border-radius:8px;background:var(--mint);color:var(--g2);font-size:12px;font-weight:700;text-decoration:none;border:1px solid #c5ddd7;transition:background .15s}.card-link:hover{background:#d0eae4}.notice{margin-top:22px;padding:14px 16px;background:var(--warn);border:1px solid #efdaa3;border-radius:12px;color:#79520b;font-size:13px}.hidden{display:none!important}.empty{background:white;border:1px dashed #c8d5d1;border-radius:12px;padding:35px;text-align:center;color:var(--muted);margin-top:16px}.detail{max-width:900px;margin:auto}.back{border:0;background:none;color:var(--g2);font-weight:700;cursor:pointer;padding:8px 0;margin-bottom:10px}.detailhead,.panel{background:white;border:1px solid var(--line);border-radius:15px;padding:21px;margin-bottom:14px}.detailhead h1{font-size:clamp(25px,4vw,32px);line-height:1.2;margin:13px 0 7px}.detailhead p{color:var(--muted);margin:0}.status{display:inline-block;margin-top:12px;padding:4px 8px;background:#f0f2f1;border-radius:6px;color:#56635f;font-size:11px}.panel h2{font-size:17px;margin:0 0 12px}.panel ol,.panel ul{padding-left:23px;margin:0}.panel li{padding:0 0 9px 3px}.panel li:last-child{padding-bottom:0}.btn{display:inline-block;background:var(--g);color:white;text-decoration:none;padding:11px 15px;border-radius:10px;font-weight:700}.source{font-size:12px;color:var(--muted);margin-top:13px}.footer{max-width:1150px;margin:auto;padding:0 20px 28px;color:var(--muted);font-size:12px}@media(max-width:800px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:550px){.grid{grid-template-columns:1fr}.search{flex-direction:column}.search button{padding:12px}}
+</style></head><body>
+<header class="top"><div class="brand"><div class="logo">⌂</div><div><div class="eyebrow">Manual interno</div><strong>Descomplica SP · Guia de Atendimento</strong></div></div><div class="hero" id="hero"><h1>Encontre uma orientação rapidamente.</h1><p>Consulte o procedimento, confira os avisos importantes e acesse o portal do serviço sem procurar em vários documentos.</p><div class="search"><input id="q" type="search" placeholder="Digite o nome do serviço ou uma palavra-chave…" aria-label="Buscar serviços"><button id="clear">Limpar busca</button></div></div></header>
+<main class="wrap"><section id="catalog"><div class="toolbar"><p id="count"></p><div class="filters" id="filters"></div></div><div class="grid" id="grid"></div><div id="empty" class="empty hidden">Nenhum serviço encontrado. Tente outro termo ou categoria.</div><div class="notice"><b>Importante:</b> confira os procedimentos e avisos com as orientações oficiais antes do uso como referência validada.</div></section><section id="detail" class="detail hidden"></section></main>
+<footer class="footer">Uso interno. Não registre CPF, senhas, códigos de autenticação, documentos ou outros dados pessoais de cidadãos neste guia.</footer>
+<script>
+
+/* ============================================================
+   DADOS DOS SERVIÇOS — edite somente esta seção
+   Para adicionar um serviço: copie um bloco { ... } e ajuste.
+   Para remover: apague o bloco correspondente.
+   Campos:
+     id      → identificador único (sem espaços)
+     t       → título do serviço
+     c       → categoria (aparece nos filtros)
+     i       → emoji do ícone
+     p       → descrição curta
+     k       → palavras-chave de busca (separe por espaço)
+     steps   → array de passos (strings)
+     a       → array de avisos importantes (strings)
+     links   → array de ["Texto do botão", "https://url"]
+============================================================ */
+
+const S = [
+
+  {
+    id: "idoso",
+    t: "Cartão de estacionamento — Idoso",
+    cats: ["Trânsito e mobilidade"],
+    i: "🅿️",
+    p: "Emitir a credencial de estacionamento para pessoa idosa pelo Portal de Serviços da SENATRAN.",
+    k: "idoso credencial estacionamento senatran gov.br",
+    steps: [
+      "Acessar o Portal de Serviços da SENATRAN.",
+      "Entrar com a conta GOV.BR do munícipe.",
+      "Abrir \u201cUsuário\u201d.",
+      "Clicar em \u201cCredencial de estacionamento\u201d.",
+      "Selecionar \u201cIdoso\u201d e emitir a credencial."
+    ],
+    a: [
+      "O munícipe precisa conseguir acessar a conta GOV.BR.",
+      "É necessário ter celular com acesso ao e-mail e/ou SMS.",
+      "A opção de cartão para pessoa com deficiência pode não aparecer sem CNH; confira o procedimento DeFis nesses casos."
+    ],
+    links: [["Abrir Portal de Serviços SENATRAN", "https://portalservicos.senatran.serpro.gov.br/#/home"]]
+  },
+
+  {
+    id: "defis",
+    t: "Cartão de estacionamento — Pessoa com deficiência (DeFis)",
+    cats: ["Trânsito e mobilidade", "SP156"],
+    i: "♿",
+    p: "Iniciar a solicitação do Cartão de Estacionamento DeFis pelo Portal SP156.",
+    k: "defis deficiente deficiência estacionamento sp156 gov.br",
+    steps: [
+      "Acessar o Portal SP156.",
+      "Pesquisar \u201cCartão de estacionamento DeFis\u201d.",
+      "Abrir o serviço e clicar na opção amarela à direita: \u201cProsseguir como…\u201d, que mostra o nome do munícipe.",
+      "Preencher os dados solicitados e finalizar a solicitação."
+    ],
+    a: [
+      "O munícipe precisa residir no município de São Paulo.",
+      "A deficiência pode ser temporária ou definitiva.",
+      "O procedimento exige uso da conta GOV.BR.",
+      "Necessário laudo médico atualizado de até 3 meses da deficiência.",
+      "Obrigatório comprovante de residência em nome da pessoa, com endereço em São Paulo."
+    ],
+    links: [["Abrir Portal SP156", "https://sp156.prefeitura.sp.gov.br/portal/servicos/informacao?servico=3314"]]
+  },
+
+  {
+    id: "senha",
+    t: "Acesso à conta GOV.BR — Recuperar senha",
+    cats: ["Conta GOV.BR"],
+    i: "🔐",
+    p: "Orientar o munícipe no fluxo de recuperação de senha.",
+    k: "gov.br acesso login senha recuperar reconhecimento facial cpf",
+    steps: [
+      "Acessar o GOV.BR pelo computador ou celular do munícipe.",
+      "Informar o CPF na tela de acesso.",
+      "Selecionar \u201cEsqueci minha senha\u201d.",
+      "Realizar o reconhecimento facial conforme as opções do sistema.",
+      "Escolher a recuperação por e-mail ou SMS.",
+      "Informar o código recebido e cadastrar a nova senha."
+    ],
+    a: [
+      "O munícipe precisa ter acesso ao e-mail e/ou SMS no telefone.",
+      "Quatro tentativas de reconhecimento facial; após quatro erros, a conta pode ficar bloqueada por algumas horas ou até um dia.",
+      "Nunca peça que o munícipe revele a senha."
+    ],
+    links: [["Abrir GOV.BR", "https://www.gov.br/"]]
+  },
+
+  {
+    id: "contato",
+    t: "Recuperar acesso ao e-mail e/ou celular do GOV.BR",
+    cats: ["Conta GOV.BR"],
+    i: "📱",
+    p: "Orientar a solicitação de recuperação do e-mail ou telefone associado à conta GOV.BR.",
+    k: "gov.br email e-mail celular sms telefone recuperar trocar contato reconhecimento facial sou gov banco",
+    steps: [
+      "Acessar o GOV.BR pelo computador ou celular do munícipe.",
+      "Informar o CPF e selecionar \u201cEsqueci minha senha\u201d.",
+      "Realizar o reconhecimento facial.",
+      "Selecionar \u201cNão tenho acesso a este e-mail\u201d e/ou \u201cNão tenho acesso a este celular\u201d, conforme a necessidade.",
+      "Selecionar \u201cRecuperar de outra forma\u201d, sem usar recuperação por banco.",
+      "Preencher o formulário explicando o motivo da troca do e-mail e/ou celular.",
+      "No campo \u201cServiço\u201d, confirmar a opção \u201cSOU GOV\u201d.",
+      "Prosseguir com a verificação de vida e enviar foto de documento com foto."
+    ],
+    a: [
+      "Proibido nas máquinas do Descomplica: \u201cLogin com banco\u201d ou \u201cRecuperar com banco\u201d.",
+      "Confirme quais meios de contato estão disponíveis para a etapa escolhida.",
+      "Quatro tentativas de reconhecimento facial — possível bloqueio temporário após falhas.",
+      "Nunca peça ao munícipe que revele a senha ou deixe códigos de autenticação registrados."
+    ],
+    links: [["Abrir GOV.BR", "https://www.gov.br/"]]
+  },
+
+  {
+    id: "boleto",
+    t: "Emissão de boleto do IPTU",
+    cats: ["IPTU"],
+    i: "🏠",
+    p: "Localizar débitos do IPTU e exibir o boleto para impressão.",
+    k: "iptu boleto pagar dívida sql contribuinte imóvel cadastro ppi tdm",
+    steps: [
+      "Acessar o portal de consulta do IPTU da Prefeitura de São Paulo.",
+      "Informar o SQL (número do contribuinte do imóvel).",
+      "Selecionar \u201cVer todas\u201d.",
+      "Selecionar \u201cPagar\u201d no lado direito da linha correspondente.",
+      "Escolher \u201cBoleto\u201d.",
+      "Selecionar \u201cExibir boleto completo\u201d.",
+      "Imprimir e entregar o boleto ao munícipe."
+    ],
+    a: [
+      "Se o munícipe não souber o SQL, pedir que anote o endereço completo e encaminhá-lo ao setor de Cadastro.",
+      "Confira imóvel e exercício antes de imprimir."
+    ],
+    links: [["Abrir portal do IPTU", "https://iptu.prefeitura.sp.gov.br/login"]]
+  },
+  {
+    id: "ccm",
+    t: "Criação de um CCM",
+    cats: ["CCM"],
+    i: "🧾",
+    p: "Cadastro de CCM para pessoa física e jurídica.",
+    k: "ccm cadastro pessoa física fisica jurídica juridica cpf cnpj senha web fazenda formulário formulario assinatura agendamento",
+    steps: [
+      "Acessar o link para criação do CCM.",
+      "Preencher o CPF ou CNPJ.",
+      "Preencher todo o formulário com as informações do munícipe.",
+      "Imprimir o formulário para assinatura.",
+      "Tirar uma cópia do RG ou da CNH do munícipe e realizar um agendamento para a Fazenda."
+    ],
+    a: [
+      "Caso o munícipe não tenha uma Senha Web, a última aba do formulário será destinada à criação da senha.",
+      "A assinatura que o munícipe realizará no formulário deverá ser a mesma assinatura do documento de identificação do qual será tirada a cópia.",
+      "A finalização deste serviço não é realizada digitalmente; ela é realizada na Fazenda."
+    ],
+    links: [["Abrir link para criação do CCM", "https://ccm.prefeitura.sp.gov.br/login/contribuinte?tipo=I"]]
+  },
+  {
+    id: "processos",
+    t: "Consulta ao Portal de Processos",
+    cats: ["Processos"],
+    i: "📂",
+    p: "Portal para consulta de processos da Prefeitura de São Paulo.",
+    k: "processos portal consultar processo protocolo interessado comunique-se comunique se gov.br",
+    steps: [
+      "Acessar o link do Portal de Processos e inserir o número do processo.",
+      "Consultar as abas, organizadas por segmentos do processo.",
+      "Identificar a informação que o munícipe deseja consultar no portal."
+    ],
+    a: [
+      "Caso o munícipe seja o interessado no processo (quem deu abertura ao processo), é possível entrar com a conta GOV.BR do munícipe para localizar o processo sem o número de protocolo.",
+      "Caso o munícipe não tenha o protocolo e não seja o interessado no processo, deverá falar com o interessado para obter acesso às informações.",
+      "Se houver um “COMUNIQUE-SE” aberto no processo, abrir a aba “COMUNIQUE-SE” no guia."
+    ],
+    links: [["Consultar Portal de Processos", "https://processos.prefeitura.sp.gov.br/forms/consultarprocessos.aspx"]]
+  },
+  {
+    id: "poda-arvore",
+    t: "Pedido de poda de árvore — praças ou calçadas",
+    cats: ["SP156"],
+    i: "🌳",
+    p: "Solicitar poda ou remoção de árvores em áreas públicas, como calçadas ou praças.",
+    k: "156 poda árvore arvore remoção remocao praça praca calçada calcada passeio público anonimo anônimo fotos vídeos videos prioridade protocolo",
+    steps: [
+      "Abrir o link do SP156 e escolher se a solicitação será feita com a conta GOV.BR do munícipe ou de forma anônima.",
+      "Preencher todo o formulário digital.",
+      "Na página seguinte do formulário, anexar, se desejar, fotos da árvore e do local onde ela está."
+    ],
+    a: [
+      "Se o munícipe fizer o pedido de forma anônima, não será possível consultar o status pelo portal SP156, e a solicitação também ficará bloqueada para pedido de prioridade.",
+      "Sempre imprimir o protocolo gerado ao final da solicitação e entregá-lo ao munícipe. Ele comprova que o serviço foi solicitado, inclusive nos pedidos anônimos.",
+      "O envio de fotos ou vídeos é opcional. Se o munícipe quiser adicioná-los posteriormente, poderá acessar “Minhas Solicitações” no portal SP156, localizar a solicitação e incluir os arquivos.",
+      "Para realizar este serviço, é obrigatório que o munícipe resida no município de São Paulo."
+    ],
+    links: [["Abrir serviço no SP156", "https://sp156.prefeitura.sp.gov.br/portal/servicos/informacao?servico=1071"]]
+  },
+  {
+    id: "isencao-iptu",
+    t: "Pedido inicial de isenção de IPTU",
+    cats: ["IPTU"],
+    i: "🏠",
+    p: "Solicitação inicial de isenção de IPTU para aposentados e pensionistas.",
+    k: "iptu isenção isencao aposentado aposentados pensionista pensionistas siia imposto renda inss valor venal croqui planta imóvel",
+    steps: [
+      "Acessar o link do SIIA (Sistema de Isenção de Aposentados) e entrar com a conta GOV.BR do munícipe.",
+      "Preencher todo o formulário com as informações do munícipe, conferindo com calma todos os campos preenchidos.",
+      "Anexar os documentos necessários, listados nos avisos deste serviço."
+    ],
+    a: [
+      "O IPTU deve estar em nome do munícipe; caso contrário, o SIIA não localizará o imóvel.",
+      "Documentos necessários: RG ou CNH; extrato do INSS; última declaração de Imposto de Renda (caso não seja isento); espelho do IPTU com o nome do munícipe no campo “Contribuinte” (se não tiver, acessar o serviço “Emissão do espelho do IPTU”); e planta ou croqui do imóvel, que pode ser feito à mão pelo munícipe.",
+      "O imóvel deve ter valor venal de, no máximo, R$ 1.823.697,00. Para consultar o valor venal, acessar o serviço “Consultar valor venal do imóvel”.",
+      "Também é necessária uma declaração escrita à mão informando que o munícipe não possui outro imóvel em seu nome. A declaração deve conter nome completo, CPF, RG e assinatura legível.",
+      "Segundo as orientações fornecidas para este guia, o rendimento mensal deve estar na faixa de 3 a 5 salários mínimos. Para rendimentos abaixo de 3 salários mínimos, a isenção será de 100%; acima de 3 salários mínimos, a isenção poderá ser parcial, de 70% a 20%. Confirme os critérios vigentes no portal oficial antes de orientar o munícipe."
+    ],
+    links: [["Abrir SIIA — Isenção de Aposentados", "https://isencaoaposentados.prefeitura.sp.gov.br/"]]
+  },
+  {
+    id: "consulta-ccm",
+    t: "Consulta de dados do CCM",
+    cats: ["CCM"],
+    i: "🧾",
+    p: "Consultar e imprimir a Ficha de Dados Cadastrais (FDC) do CCM do munícipe.",
+    k: "ccm consulta dados cadastro fdc ficha dados cadastrais cpf cnpj contribuinte",
+    steps: [
+      "Acessar o link de consulta do CCM e inserir o CPF ou CNPJ do munícipe.",
+      "Imprimir a FDC (Ficha de Dados Cadastrais) do CCM e entregá-la ao munícipe."
+    ],
+    a: [
+      "Para realizar a consulta, o munícipe precisa possuir um CCM ativo vinculado ao CPF ou CNPJ no município de São Paulo."
+    ],
+    links: [["Consultar dados do CCM", "https://ccm.prefeitura.sp.gov.br/login/contribuinte?tipo=F"]]
+  },
+
+{
+    id: "venal",
+    t: "Consultar valor venal do imóvel",
+    cats: ["IPTU"],
+    i: "📄",
+    p: "Consultar o valor venal do imóvel no portal Explicando o IPTU.",
+    k: "valor venal imóvel iptu sql cadastro resumo",
+    steps: [
+      "Acessar o portal Explicando o IPTU.",
+      "Informar o SQL do imóvel.",
+      "Selecionar \u201cResumo do IPTU\u201d.",
+      "Consultar, à direita, o valor venal do ano atual e do ano anterior."
+    ],
+    a: [
+      "Se o munícipe não souber o SQL, pedir que anote o endereço completo e encaminhá-lo ao setor de Cadastro.",
+      "Confirme que o SQL corresponde ao imóvel correto antes de orientar o munícipe."
+    ],
+    links: [["Abrir Explicando o IPTU", "https://explicandoiptu.sf.prefeitura.sp.gov.br/"]]
+  }
+,
+
+{
+  "id": "agendamento-patriarca",
+  "t": "Agendamento Patriarca — Secretaria da Fazenda",
+  cats: ["Agendamento"],
+  "i": "📅",
+  "p": "Plataforma para agendamento de atendimento na Central da Secretaria Municipal da Fazenda.",
+  "k": "agendamento patriarca fazenda secretaria municipal central marcar consultar cancelar remarcar",
+  "steps": [
+    "Acesse o link e clique em “PROSSEGUIR”. Preencha todo o formulário com as informações do munícipe.",
+    "Localize o assunto que o munícipe deseja tratar na Secretaria da Fazenda.",
+    "Selecione uma data disponível e finalize conferindo todas as informações inseridas.",
+    "Imprima o relatório do agendamento e entregue ao munícipe. O relatório contém o endereço do local, os documentos necessários e as informações do atendimento."
+  ],
+  "a": [
+    "No mesmo site, é possível consultar agendamentos existentes, cancelar ou remarcar.",
+    "Se o munícipe não puder comparecer ou precisar mudar a data, acesse a aba “Consultar agendamento” para remarcar."
+  ],
+  "links": [
+    [
+      "Abrir agendamento da Fazenda",
+      "https://agendamentosf.prefeitura.sp.gov.br/forms/AgendarP1.aspx"
+    ]
+  ]
+},
+
+{
+  "id": "agendamento-smul",
+  "t": "Agendamento SMUL",
+  cats: ["Agendamento"],
+  "i": "🏙️",
+  "p": "Agendamento para a Secretaria Municipal de Urbanismo e Licenciamento (SMUL).",
+  "k": "smul urbanismo licenciamento agendamento processo marcar horário cancelar",
+  "steps": [
+    "Acesse o site e clique em “Solicitar agendamento”.",
+    "Preencha os campos com as informações pessoais do munícipe.",
+    "Selecione o melhor dia e horário disponíveis e confirme os dados preenchidos.",
+    "Imprima o comprovante de agendamento e entregue ao munícipe."
+  ],
+  "a": [
+    "Diferentemente do agendamento da Fazenda, o agendamento da SMUL só deve ser feito quando houver um processo da SMUL em aberto.",
+    "Não é possível remarcar o agendamento. Se o munícipe mudar de ideia, será necessário cancelar e realizar um novo agendamento.",
+    "Antes de agendar, é necessário esgotar as opções anteriores. Consulte os disseminadores ou a administração (ADM) da unidade para confirmar as orientações, se necessário."
+  ],
+  "links": [
+    [
+      "Abrir agendamento SMUL",
+      "https://smulagendamento.prefeitura.sp.gov.br/PaginasPublicas/frmPaginaInicial.aspx"
+    ]
+  ]
+},
+
+{
+  "id": "psiu",
+  "t": "Reclamação de poluição sonora — PSIU",
+  cats: ["SP156"],
+  "i": "🔊",
+  "p": "Registrar uma denúncia de poluição sonora pelo Portal SP156.",
+  "k": "156 psiu reclamação denuncia denúncia poluição sonora barulho ruído fiscalização",
+  "steps": [
+    "Acesse o Portal SP156 pelo link abaixo.",
+    "Entre com a conta GOV.BR ou inicie o serviço de forma anônima, conforme as opções disponíveis.",
+    "Preencha todo o formulário e descreva brevemente o problema e a fonte da poluição sonora."
+  ],
+  "a": [
+    "Segundo as orientações fornecidas para este serviço, o PSIU não fiscaliza ruídos provenientes de obras públicas, food trucks e barracas de alimentos em vias ou áreas públicas, residências (por exemplo, festas de aniversário e latidos de cães) nem artistas de rua.",
+    "A denúncia do PSIU é indicada para locais onde a poluição sonora ocorre de forma recorrente, pois a fiscalização pode levar tempo.",
+    "Para outras reclamações, a orientação fornecida é ligar para o 190 e, se o problema persistir, abrir no SP156 a solicitação “Comércio, serviço e indústria — solicitar fiscalização de funcionamento”. A fiscalização dessa solicitação pode demorar até quatro meses; confirme a orientação aplicável antes de encaminhar o munícipe."
+  ],
+  "links": [
+    [
+      "Abrir reclamação de poluição sonora — PSIU",
+      "https://sp156.prefeitura.sp.gov.br/portal/servicos/informacao?servico=824"
+    ]
+  ]
+},
+
+{
+  "id": "chat-156-whatsapp",
+  "t": "Chat 24 horas do SP156 — WhatsApp",
+  cats: ["SP156"],
+  "i": "💬",
+  "p": "Chat automatizado via WhatsApp para tirar dúvidas e realizar alguns serviços do Portal SP156.",
+  "k": "156 chat whatsapp robô robo 24 horas dúvidas duvidas serviços atendimento árvore entulho",
+  "steps": [
+    "Acesse o link abaixo. Na página do serviço, estará disponível o acesso ao WhatsApp."
+  ],
+  "a": [
+    "Este é um chat automatizado, disponível 24 horas, limitado aos 19 serviços listados abaixo:",
+    "1. Agendar atualização do CadÚnico; 2. Adotar cães e gatos; 3. Baixas temperaturas — solicitar abordagem social; 4. Denunciar violência contra a mulher; 5. Denunciar racismo; 6. Árvore — solicitar avaliação em calçadas e praças para poda ou remoção; 7. Solicitar remoção de entulho e grandes objetos em via pública; 8. Solicitar remoção de veículo ou carcaça abandonada em via pública; 9. Solicitar limpeza de bueiros, bocas de lobo e poços de visita; 10. Solicitar tapa-buraco; 11. Solicitar manutenção, conserto ou limpeza de ponto de ônibus; 12. Altas temperaturas — solicitar abordagem social; 13. Foco de dengue — solicitar vistoria de local com água parada; 14. Denunciar assédio sexual; 15. Denunciar assédio moral; 16. Denunciar conduta inadequada de agente público; 17. Denunciar desvio de verba, materiais ou bens públicos; 18. Denunciar ilegalidade na gestão pública; 19. Denunciar irregularidade na contratação ou gestão de serviço público.",
+    "O chat não substitui o atendimento telefônico do 156, que atende mais de 1.250 serviços. Ele é uma alternativa para que o munícipe realize pelo WhatsApp os serviços disponíveis nessa lista."
+  ],
+  "links": [
+    [
+      "Abrir informações do chat SP156",
+      "https://sp156.prefeitura.sp.gov.br/portal/servicos/informacao?conteudo=4188"
+    ]
+  ]
+},
+
+{
+  "id": "isencao-iptu-sav",
+  "t": "Solicitação de isenção do IPTU via SAV",
+  cats: ["IPTU", "SAV"],
+  "i": "🧾",
+  "p": "Solicitar a isenção do IPTU pelo SAV, normalmente após realizar o pedido no SIIA.",
+  "k": "isenção isencao iptu sav aposentado pensionista renda mensal vitalícia siia pedido administrativo",
+  "steps": [
+    "Acesse o link e entre com a conta GOV.BR do aposentado ou pensionista.",
+    "Abra as abas “IPTU” e “Outros Pedidos Administrativos”. Selecione “Pedido de isenção do IPTU para aposentados e pensionistas, bem como beneficiário de renda mensal vitalícia”.",
+    "Preencha o formulário com as informações do munícipe e do imóvel. Consulte a seção de avisos para verificar a documentação exigida."
+  ],
+  "a": [
+    "Para solicitar pelo SAV, é obrigatório já ter feito o pedido pelo SIIA, exceto nas situações informadas: falecimento do proprietário anterior, erro de sistema ou IPTU em nome de outra pessoa.",
+    "Se o IPTU estiver em nome de pessoa falecida, será necessário anexar o inventário e a certidão de óbito.",
+    "Documentos informados como obrigatórios: matrícula atualizada emitida há no máximo três meses; escritura ou outro documento que comprove que o munícipe recebeu o imóvel; petição com CPF, RG, data e assinatura do munícipe; RG ou CNH; carnê do IPTU do exercício ao qual o pedido se refere; comprovante de residência em nome do requerente referente a janeiro do ano para o qual solicita a isenção; declaração do órgão pagador com valor e tipo do benefício referente a janeiro do ano solicitado; última Declaração de Imposto de Renda Pessoa Física (DIRPF) ou declaração de próprio punho informando que está isento de entregá-la, se aplicável.",
+    "O comprovante de endereço pode ser de qualquer imóvel do munícipe, desde que esteja em nome dele e seja referente ao mês de janeiro.",
+    "Para consultar o carnê do IPTU, utilize o serviço “Emissão do espelho/carnê do IPTU”.",
+    "Antes de finalizar qualquer solicitação no SAV, consulte os disseminadores ou a administração (ADM) para confirmar os dados e os documentos aplicáveis."
+  ],
+  "links": [
+    [
+      "Abrir SAV — Solicitações",
+      "https://sav-internet.sf.prefeitura.sp.gov.br/"
+    ]
+  ]
+},
+
+{
+  "id": "espelho-carne-iptu",
+  "t": "Emissão do espelho/carnê do IPTU",
+  cats: ["IPTU"],
+  "i": "📑",
+  "p": "Emitir o espelho ou carnê do IPTU de um imóvel.",
+  "k": "emissão emissao espelho carnê carne iptu sql lançamento lancamento gov senha web contribuinte",
+  "steps": [
+    "Acesse o serviço pelo link abaixo e entre com a conta GOV.BR do munícipe.",
+    "Informe o SQL do imóvel e o ano de lançamento desejado."
+  ],
+  "a": [
+    "É obrigatório ter Senha Web ou acesso à conta GOV.BR.",
+    "Para gerar o espelho com o nome do contribuinte, entre com a conta GOV.BR do titular do IPTU ou informe o documento dele quando o sistema solicitar.",
+    "Os três primeiros dígitos do CPF sempre aparecerão no início do campo."
+  ],
+  "links": [
+    [
+      "Emitir espelho/carnê do IPTU",
+      "https://notcertiptu.prefeitura.sp.gov.br/PaginasRestritas/frm001_Gerar_Notif_Lanc.aspx"
+    ]
+  ]
+}
+];
+
+/* ============================================================
+   FIM DOS DADOS — não edite abaixo desta linha
+============================================================ */
+
+const cats=["Todos",...new Set(S.flatMap(x=>x.cats||[x.c]))];let cat="Todos";
+const $=x=>document.getElementById(x);function esc(x){return String(x).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function filters(){$("filters").innerHTML=cats.map(c=>`<button class="chip ${c===cat?"active":""}" data-cat="${esc(c)}">${esc(c)}</button>`).join("");document.querySelectorAll("[data-cat]").forEach(b=>b.onclick=()=>{cat=b.dataset.cat;filters();cards()})}
+function cards(){let q=$("q").value.trim().toLocaleLowerCase("pt-BR");let a=S.filter(s=>(cat==="Todos"||(s.cats||[s.c]).includes(cat))&&(!q||(s.t+" "+(s.cats||[s.c]).join(" ")+" "+s.p+" "+s.k+" "+s.steps.join(" ")+" "+s.a.join(" ")).toLocaleLowerCase("pt-BR").includes(q)));$("count").textContent=`${a.length} ${a.length===1?"serviço encontrado":"serviços encontrados"}`;$("grid").innerHTML=a.map(s=>`<button class="card" data-id="${s.id}"><div class="ctop"><span class="ico">${s.i}</span><span class="tag">${(s.cats||[s.c]).map(c=>esc(c)).join(" · ")}</span></div><h2>${esc(s.t)}</h2><p>${esc(s.p)}</p><div class="foot"><span>Ver procedimento</span><span>→</span></div>${s.links&&s.links.length?`<a class="card-link" href="${esc(s.links[0][1])}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">↗ Ir ao portal</a>`:''}</button>`).join("");$("empty").classList.toggle("hidden",!!a.length);document.querySelectorAll("[data-id]").forEach(b=>{
+  let timer=null;
+  b.addEventListener("click",e=>{
+    if(e.target.closest(".card-link"))return;
+    open(b.dataset.id);
+  });
+})}
+function open(id){let s=S.find(x=>x.id===id);$("catalog").classList.add("hidden");$("detail").classList.remove("hidden");$("detail").innerHTML=`<button class="back" id="back">← Voltar ao catálogo</button><div class="detailhead"><div class="ctop"><span class="ico">${s.i}</span><span class="tag">${(s.cats||[s.c]).map(c=>esc(c)).join(" · ")}</span></div><h1>${esc(s.t)}</h1><p>${esc(s.p)}</p><span class="status">Manual interno · Descomplica Pinheiros</span></div><div class="panel"><h2>✓ Passo a passo</h2><ol>${s.steps.map(x=>`<li>${esc(x)}</li>`).join("")}</ol></div><div class="panel"><h2>⚠ Avisos importantes</h2><ul>${s.a.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div><div class="panel"><h2>↗ Acesso ao serviço</h2>${s.links.map(l=>`<a class="btn" href="${esc(l[1])}" target="_blank" rel="noopener noreferrer">${esc(l[0])} ↗</a>`).join(" ")}<p class="source">O link abre em outra aba. Confira se o endereço e as opções continuam válidos.</p></div>`;$("back").onclick=()=>{$("detail").classList.add("hidden");$("catalog").classList.remove("hidden");window.scrollTo({top:0,behavior:"smooth"})};window.scrollTo({top:0,behavior:"smooth"})}
+$("q").addEventListener("input",cards);$("clear").onclick=()=>{$("q").value="";cat="Todos";filters();cards();$("q").focus()};filters();cards();
+</script></body></html>
