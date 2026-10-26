@@ -550,7 +550,7 @@ function openEvaluation(mode) {
   // A rota é definida diretamente no documento embutido, sem depender de frameElement.
   const initialView = mode === 'admin' ? 'showView("admin");' : 'showView("citizen");';
   const embeddedDocument = evaluationDocument.replace(
-    /if \(window\.frameElement && window\.frameElement\.dataset\.mode === "admin"\) showView\("admin"\);/,
+    'if (window.frameElement && window.frameElement.dataset.mode === "admin") showView("admin");',
     initialView
   );
   document.body.innerHTML = '';
