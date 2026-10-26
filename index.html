@@ -547,12 +547,16 @@ function openEvaluation(mode) {
   frame.id = 'directFrame';
   frame.setAttribute('title', mode === 'admin' ? 'Área administrativa de avaliações' : 'Avaliação de atendimento');
   frame.dataset.mode = mode;
-  // Define explicitamente a tela inicial sem depender do acesso ao frameElement.
-  frame.srcdoc = mode === 'admin'
-    ? evaluationDocument.replace('if (window.frameElement && window.frameElement.dataset.mode === \\"admin\\") showView(\\"admin\\");', 'showView(\"admin\");')
-    : evaluationDocument.replace('if (window.frameElement && window.frameElement.dataset.mode === \\"admin\\") showView(\\"admin\\");', 'showView(\"citizen\");');
+  // A rota é definida diretamente no documento embutido, sem depender de frameElement.
+  const initialView = mode === 'admin' ? 'showView("admin");' : 'showView("citizen");';
+  const embeddedDocument = evaluationDocument.replace(
+    /if \(window\.frameElement && window\.frameElement\.dataset\.mode === "admin"\) showView\("admin"\);/,
+    initialView
+  );
   document.body.innerHTML = '';
   document.body.className = 'direct-evaluation';
+  frame.style.cssText = 'display:block;width:100%;height:100vh;min-height:100vh;border:0;background:#f3f6fb';
+  frame.srcdoc = embeddedDocument;
   document.body.appendChild(frame);
 }
 const route = new URLSearchParams(window.location.search);
