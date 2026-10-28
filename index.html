@@ -547,14 +547,24 @@ function openEvaluation(mode) {
   frame.id = 'directFrame';
   frame.setAttribute('title', mode === 'admin' ? 'Área administrativa de avaliações' : 'Avaliação de atendimento');
   frame.dataset.mode = mode;
-  frame.srcdoc = evaluationDocument;
+  // Força o modo dentro do documento incorporado, sem depender de window.frameElement,
+  // que pode não estar disponível de forma consistente em alguns navegadores.
+  const adminModeLine = 'if (window.frameElement && window.frameElement.dataset.mode === "admin") showView("admin");';
+  const forcedModeLine = `if (${JSON.stringify(mode)} === "admin") showView("admin");`;
+  // O fechamento do script interno fica escapado no HTML externo para não encerrar
+  // prematuramente o script principal. Ao montar o srcdoc, restauramos a tag de fechamento.
+  const decodedDocument = evaluationDocument.replaceAll('<\\/script>', '</scr' + 'ipt>');
+  frame.srcdoc = decodedDocument.replace(adminModeLine, forcedModeLine);
   document.body.innerHTML = '';
   document.body.className = 'direct-evaluation';
   document.body.appendChild(frame);
 }
 const route = new URLSearchParams(window.location.search);
-if (route.has('avaliacao') || route.has('admin')) {
-  openEvaluation(route.has('admin') ? 'admin' : 'citizen');
+const routePath = window.location.pathname.replace(/\/+$/, '').toLowerCase();
+const wantsAdmin = route.has('admin') || route.get('admin') === '1' || routePath === '/admin' || routePath.endsWith('/admin');
+const wantsEvaluation = route.has('avaliacao') || route.get('avaliacao') === '1' || routePath === '/avaliacao' || routePath.endsWith('/avaliacao');
+if (wantsAdmin || wantsEvaluation) {
+  openEvaluation(wantsAdmin ? 'admin' : 'citizen');
 }
 const qrBackdrop = document.getElementById('qrBackdrop');
 const qrWrap = document.getElementById('qrCanvasWrap');
@@ -579,7 +589,7 @@ function renderQr() {
   }
   new QRCode(qrWrap, {text: target, width: 220, height: 220, colorDark: '#123b35', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.H});
 }
-if (!route.has('avaliacao') && !route.has('admin')) {
+if (!wantsEvaluation && !wantsAdmin) {
 document.getElementById('openQr').addEventListener('click', () => {
   qrBackdrop.classList.add('show');
   renderQr();
